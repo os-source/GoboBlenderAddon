@@ -1,0 +1,4 @@
+__pycache__/
+
+# ignore test Elements
+testElements.txt

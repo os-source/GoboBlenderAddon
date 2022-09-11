@@ -14,20 +14,41 @@
 bl_info = {
     "name" : "goboBlenderAddon",
     "author" : "Oskar Schadenhofer",
-    "description" : "",
-    "blender" : (2, 80, 0),
+    "description" : "A lightweight Addon to create Gobo effects in Blender.",
+    "blender" : (3, 0, 0),
     "version" : (0, 0, 1),
-    "location" : "",
+    "location" : "VieweD",
     "warning" : "",
-    "category" : "Generic"
+    "wiki_url": "https://github.com/os-source/goboBlenderAddon",
+    "tracker_url": "https://github.com/os-source/goboBlenderAddon/issues",
+    "category" : "Object"
 }
 
-from . import auto_load
+import bpy
 
-auto_load.init()
+from . operators import GBA_OT_Use_Gobo
+from . pnl import GBA_PT_Panel, GBA_settings
+
+classes = (GBA_OT_Use_Gobo, GBA_PT_Panel, GBA_settings)
+
 
 def register():
-    auto_load.register()
+    print("\n\n\n\n\n\n\n\nGobo Blender Addon registered/enabled.")
+
+    for cls in classes:
+        bpy.utils.register_class(cls)
+
+    bpy.types.Object.gba = bpy.props.PointerProperty(type=GBA_settings, name="Gobo_Blender_Addon", description="Gobo properties")
+
 
 def unregister():
-    auto_load.unregister()
+    print("Gobo Blender Addon unregistered/disabled.")
+    
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
+
+    del bpy.types.Object.gba
+
+
+if __name__ == "__main__":
+    register()
