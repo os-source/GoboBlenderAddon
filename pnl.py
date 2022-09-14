@@ -41,14 +41,50 @@ class GBA_settings(PropertyGroup):
         update=goboSpeed_update,
     )
 
+    gobo_distance: IntProperty(
+        name="Distance",
+        description="Change the Distance of the Gobo",
+        soft_min=1,
+        soft_max=100,
+        default=10,
+        # update=goboDistance_update,
+    )
 
-class GBA_PT_Panel(Panel):
+    gobo_size: IntProperty(
+        name="Size",
+        description="Change the Size of the Gobo",
+        soft_min=1,
+        soft_max=100,
+        default=10,
+        # update=goboSize_update,
+    )
+
+    gobo_opacity: IntProperty(
+        name="Opacity",
+        description="Change the Opacity of the Gobo",
+        soft_min=1,
+        soft_max=100,
+        default=10,
+        # update=goboOpacity_update,
+    )
+
+
+class GBA_PT_GoboPanel(Panel):
     bl_idname = "object.use_gobo"
     bl_label = "Gobo"
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
     bl_context = "data"
-    bl_order = 10
+
+    @classmethod 
+    def poll(self, context):
+        obj = context.object
+
+        # Check if object is a light
+        if obj.type == "LIGHT":
+            return True
+        else:
+            return False
 
     def draw(self, context):
         layout = self.layout
@@ -63,12 +99,20 @@ class GBA_PT_Panel(Panel):
         # Elements shown when use gobo = true
         if gba.use_gobo == True:
             # Use Gobo Animation
-            row = layout.row()
-            row.prop(gba, "use_goboAnimation")
+            layout.prop(gba, "use_goboAnimation")
 
             # Elements shown when use gobo animation = true
             if gba.use_goboAnimation == True:
                 # Gobo speed
-                row = layout.row()
-                row.prop(gba, "gobo_speed")
+                layout.prop(gba, "gobo_speed")
 
+            # Gobo Distance
+            layout.prop(gba, "gobo_distance")
+
+            # Gobo Size
+            layout.prop(gba, "gobo_size")
+
+            # Gobo Opacity
+            layout.prop(gba, "gobo_opacity")
+
+            layout.prop(obj, "color")

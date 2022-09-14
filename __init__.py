@@ -27,9 +27,9 @@ bl_info = {
 import bpy
 
 from . operators import GBA_OT_Use_Gobo
-from . pnl import GBA_PT_Panel, GBA_settings
+from . pnl import GBA_PT_GoboPanel, GBA_settings
 
-classes = (GBA_OT_Use_Gobo, GBA_PT_Panel, GBA_settings)
+classes = (GBA_OT_Use_Gobo, GBA_PT_GoboPanel, GBA_settings)
 
 
 def register():

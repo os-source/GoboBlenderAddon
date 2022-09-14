@@ -1,4 +1,5 @@
+# ignore pycache folder
 __pycache__/
 
-# ignore test Elements
-testElements.txt
+# ignore tests folder
+/tests
