@@ -27,7 +27,6 @@ class GBA_OT_Use_Gobo(Operator):
             # === Cycles ===
             light.data.use_nodes = True
 
-
             # === Eevee ===
             cursor = bpy.context.scene.cursor
 
@@ -42,33 +41,37 @@ class GBA_OT_Use_Gobo(Operator):
             light.rotation_euler = (0, 0, 0)
 
             # Add plane/gobo
-            bpy.ops.mesh.primitive_plane_add(size=1, enter_editmode=False, align='WORLD', location=cursor.location, scale=(1, 1, 1))
+            bpy.ops.mesh.primitive_plane_add(
+                size=1,
+                enter_editmode=False,
+                align="WORLD",
+                location=cursor.location,
+                scale=(1, 1, 1),
+            )
             bpy.context.active_object.name = light.name + "_eeveeGobo"
             bpy.context.active_object.location[2] = -1
-            bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+            bpy.ops.object.origin_set(type="ORIGIN_CURSOR")
 
             # add contraints
-            constraint_copyLocation = bpy.context.active_object.constraints.new(type='COPY_LOCATION')
-            constraint_copyRotation = bpy.context.active_object.constraints.new(type='COPY_ROTATION')
+            constraint_copyLocation = bpy.context.active_object.constraints.new(
+                type="COPY_LOCATION"
+            )
+            constraint_copyRotation = bpy.context.active_object.constraints.new(
+                type="COPY_ROTATION"
+            )
 
             constraint_copyLocation.target = light
             constraint_copyRotation.target = light
-            
+
             # reset location, rotation
             cursor.location = SAVED_CURSOR_LOCATION
 
             light.location = SAVED_LIGHT_LOCATION
             light.rotation_euler = SAVED_LIGHT_ROTATION
 
-
-
         else:
             light.data.use_nodes = False
 
         print("update use nodes")
 
-        
-
-
         return {"FINISHED"}
-
