@@ -23,17 +23,22 @@ class GBA_OT_Use_Gobo(Operator):
         gba = ob.gba
 
         if gba.use_gobo == True:
-            # === Cycles ===
-            # Set use nodes
-            light.data.use_nodes = True
+            renderEngine = bpy.context.scene.render.engine
 
-            # === Eevee ===
-            createGoboEevee(light, ob, gba)
+            if renderEngine == 'CYCLES':
+                # === Cycles ===
+                # Set use nodes
+                light.data.use_nodes = True
+
+            elif renderEngine == 'BLENDER_EEVEE':
+                # === Eevee ===
+                createGoboEevee(light, ob, gba)
+
+            else:
+                self.report({'WARNING'}, 'You are using an unsupported render engine. Please use Cycles or Eevee for this addon to work properly.')
 
         else:
             light.data.use_nodes = False
-
-        print("update use nodes")
 
         return {"FINISHED"}
 
@@ -97,7 +102,9 @@ def createGoboEevee(light, ob, gba):
     light.rotation_euler = SAVED_LIGHT_ROTATION
 
 
-    # add gobo plane to gobo collection
+    # add gobo plane to gobo collection and remove from old
     obj = bpy.context.active_object
-    bpy.ops.collection.objects_remove_all()
+    bpy.data.collections['Collection'].objects.unlink(obj) 
+    #bpy.context.scene.collection.objects.unlink(obj)
     bpy.data.collections['EeveeGobos'].objects.link(obj)
+    
